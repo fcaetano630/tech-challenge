@@ -19,7 +19,10 @@ from imblearn.over_sampling import SMOTE
 # 1. CONFIGURAÇÃO LLM (HUGGING FACE)
 # =====================
 # REQUISITO 3: Integração real e Prompt Engineering
-HF_TOKEN = "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" 
+HF_TOKEN = os.getenv("HF_TOKEN")
+
+if not HF_TOKEN:
+    raise ValueError("Erro: Variável HF_TOKEN não encontrada. Verifique o arquivo .env")
 client = InferenceClient(model="meta-llama/Meta-Llama-3-8B-Instruct", token=HF_TOKEN)
 
 def get_llm_insight(outcome, raw_features):

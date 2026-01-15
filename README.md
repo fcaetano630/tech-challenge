@@ -52,4 +52,4 @@ O fluxo de dados segue a lógica: Dados Brutos ➔ Pré-processamento & SMOTE �
 Dica extra para o envio:
 Como você usou o Llama-3-8B-Instruct, na documentação da Fase 3 você pode mencionar que o sistema já está pronto para aceitar prontuários em texto, bastando enviar o texto bruto para a mesma função de insight que criamos.
 
-Deseja que eu te ajude a criar o texto da "Justificativa de Decisões de Implementação" ou esse README já te atende?
+Nota: Para rodar este projeto, crie um arquivo .env na raiz com a chave HF_TOKEN=seu_token.
