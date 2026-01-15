@@ -4,3 +4,4 @@ numpy
 scikit-learn
 imblearn
 matplotlib
+huggingface_hub
