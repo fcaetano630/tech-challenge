@@ -1,0 +1,43 @@
+2026-01-14 21:10:42,113 INFO: Dados carregados e pré-processados.
+2026-01-14 21:10:46,277 INFO: 
+===============================
+2026-01-14 21:10:46,277 INFO: \U0001f4ca Comparativo de Modelos
+2026-01-14 21:10:46,277 INFO: ===============================
+2026-01-14 21:10:46,291 INFO: 
+Random Forest:
+2026-01-14 21:10:46,291 INFO: {'accuracy': 0.7489177489177489, 'precision': 0.6385542168674698, 'recall': 0.654320987654321, 'f1': 0.6463414634146342, 'report': '              precision    recall  f1-score   support\n\n           0       0.81      0.80      0.81       150\n           1       0.64      0.65      0.65        81\n\n    accuracy                           0.75       231\n   macro avg       0.72      0.73      0.73       231\nweighted avg       0.75      0.75      0.75       231\n'}
+2026-01-14 21:10:46,304 INFO: 
+Random Forest (SMOTE):
+2026-01-14 21:10:46,304 INFO: {'accuracy': 0.7532467532467533, 'precision': 0.6428571428571429, 'recall': 0.6666666666666666, 'f1': 0.6545454545454545, 'report': '              precision    recall  f1-score   support\n\n           0       0.82      0.80      0.81       150\n           1       0.64      0.67      0.65        81\n\n    accuracy                           0.75       231\n   macro avg       0.73      0.73      0.73       231\nweighted avg       0.76      0.75      0.75       231\n'}
+2026-01-14 21:10:46,309 INFO: 
+Logistic Regression:
+2026-01-14 21:10:46,309 INFO: {'accuracy': 0.7445887445887446, 'precision': 0.6145833333333334, 'recall': 0.7283950617283951, 'f1': 0.6666666666666666, 'report': '              precision    recall  f1-score   support\n\n           0       0.84      0.75      0.79       150\n           1       0.61      0.73      0.67        81\n\n    accuracy                           0.74       231\n   macro avg       0.73      0.74      0.73       231\nweighted avg       0.76      0.74      0.75       231\n'}
+2026-01-14 21:10:46,315 INFO: 
+Logistic Regression (SMOTE):
+2026-01-14 21:10:46,315 INFO: {'accuracy': 0.7489177489177489, 'precision': 0.6210526315789474, 'recall': 0.7283950617283951, 'f1': 0.6704545454545454, 'report': '              precision    recall  f1-score   support\n\n           0       0.84      0.76      0.80       150\n           1       0.62      0.73      0.67        81\n\n    accuracy                           0.75       231\n   macro avg       0.73      0.74      0.73       231\nweighted avg       0.76      0.75      0.75       231\n'}
+2026-01-14 21:10:46,323 INFO: 
+SVM:
+2026-01-14 21:10:46,324 INFO: {'accuracy': 0.7142857142857143, 'precision': 0.5688073394495413, 'recall': 0.7654320987654321, 'f1': 0.6526315789473685, 'report': '              precision    recall  f1-score   support\n\n           0       0.84      0.69      0.76       150\n           1       0.57      0.77      0.65        81\n\n    accuracy                           0.71       231\n   macro avg       0.71      0.73      0.70       231\nweighted avg       0.75      0.71      0.72       231\n'}
+2026-01-14 21:10:46,332 INFO: 
+SVM (SMOTE):
+2026-01-14 21:10:46,332 INFO: {'accuracy': 0.7705627705627706, 'precision': 0.6666666666666666, 'recall': 0.691358024691358, 'f1': 0.6787878787878788, 'report': '              precision    recall  f1-score   support\n\n           0       0.83      0.81      0.82       150\n           1       0.67      0.69      0.68        81\n\n    accuracy                           0.77       231\n   macro avg       0.75      0.75      0.75       231\nweighted avg       0.77      0.77      0.77       231\n'}
+2026-01-14 21:10:46,332 INFO: 
+Otimização SVM com Algoritmo Genético (3 experimentos):
+2026-01-14 21:10:46,332 INFO: 
+--- GA Exp1 (pop=10, gen=5, mut=0.1) ---
+2026-01-14 21:10:47,008 INFO: GA Exp1 (pop=10, gen=5, mut=0.1) - Melhores hiperparâmetros: {'C': 10, 'kernel': 'linear', 'gamma': 'auto'}
+2026-01-14 21:10:47,008 INFO: GA Exp1 (pop=10, gen=5, mut=0.1) - Melhor recall: 0.6914
+2026-01-14 21:10:47,008 INFO: 
+--- GA Exp2 (pop=20, gen=8, mut=0.05) ---
+2026-01-14 21:10:59,646 INFO: GA Exp2 (pop=20, gen=8, mut=0.05) - Melhores hiperparâmetros: {'C': 0.1, 'kernel': 'rbf', 'gamma': 1}
+2026-01-14 21:10:59,646 INFO: GA Exp2 (pop=20, gen=8, mut=0.05) - Melhor recall: 0.9136
+2026-01-14 21:10:59,646 INFO: 
+--- GA Exp3 (pop=8, gen=12, mut=0.2) ---
+2026-01-14 21:11:00,526 INFO: GA Exp3 (pop=8, gen=12, mut=0.2) - Melhores hiperparâmetros: {'C': 0.1, 'kernel': 'rbf', 'gamma': 1}
+2026-01-14 21:11:00,526 INFO: GA Exp3 (pop=8, gen=12, mut=0.2) - Melhor recall: 0.9136
+2026-01-14 21:11:07,589 INFO: 
+\U0001f3c6 Melhor modelo por métrica:
+2026-01-14 21:11:07,589 INFO:  - Acurácia: SVM (SMOTE)
+2026-01-14 21:11:07,589 INFO:  - Precisão: SVM (SMOTE)
+2026-01-14 21:11:07,589 INFO:  - Recall: SVM
+2026-01-14 21:11:07,590 INFO:  - F1: SVM (SMOTE)
