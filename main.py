@@ -51,37 +51,6 @@ def load_and_preprocess_data(csv_path):
 # =====================
 # 2. Treinamento dos Modelos
 # =====================
-def train_random_forest(X_train, y_train, X_train_bal, y_train_bal, X_test, y_test):
-    param_grid_rf = {
-        'n_estimators': [100, 200],
-        'max_depth': [10, 20],
-        'min_samples_split': [2, 5],
-        'min_samples_leaf': [1, 2],
-        'max_features': ['sqrt']
-    }
-    cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
-    rf = RandomForestClassifier(random_state=42, class_weight='balanced')
-    rf_smote = RandomForestClassifier(random_state=42)
-    grid_rf = GridSearchCV(rf, param_grid_rf, scoring='recall', cv=cv, n_jobs=-1)
-    grid_rf_smote = GridSearchCV(rf_smote, param_grid_rf, scoring='recall', cv=cv, n_jobs=-1)
-    grid_rf.fit(X_train, y_train)
-    grid_rf_smote.fit(X_train_bal, y_train_bal)
-    return grid_rf, grid_rf_smote
-
-def train_logistic_regression(X_train, y_train, X_train_bal, y_train_bal, X_test, y_test):
-    param_grid_lr = {
-        'penalty': ['l1', 'l2'],
-        'C': [0.01, 0.1, 1, 10],
-        'solver': ['liblinear', 'saga']
-    }
-    cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
-    lr = LogisticRegression(random_state=42, class_weight='balanced', max_iter=1000)
-    lr_smote = LogisticRegression(random_state=42, max_iter=1000)
-    grid_lr = GridSearchCV(lr, param_grid_lr, scoring='recall', cv=cv, n_jobs=-1)
-    grid_lr_smote = GridSearchCV(lr_smote, param_grid_lr, scoring='recall', cv=cv, n_jobs=-1)
-    grid_lr.fit(X_train, y_train)
-    grid_lr_smote.fit(X_train_bal, y_train_bal)
-    return grid_lr, grid_lr_smote
 
 def train_svm(X_train, y_train, X_train_bal, y_train_bal, X_test, y_test):
     param_grid = {
@@ -115,9 +84,9 @@ def evaluate_model(model, X_test, y_test):
 # 4. Algoritmo Genético para SVM
 # =====================
 HYPERPARAMS = {
-    'C': [0.1, 1, 10],
-    'kernel': ['linear', 'rbf', 'poly'],
-    'gamma': ['scale', 'auto', 0.01, 0.1, 1]
+    'C': [0.01, 0.1, 1, 10, 100],
+    'kernel': ['linear', 'rbf', 'poly', 'sigmoid'],
+    'gamma': ['scale', 'auto', 0.001, 0.01, 0.1, 1, 10]
 }
 def create_individual():
     return {k: random.choice(v) for k, v in HYPERPARAMS.items()}
@@ -125,14 +94,25 @@ def initialize_population(pop_size):
     return [create_individual() for _ in range(pop_size)]
 def fitness_function(individual, X_train_bal, y_train_bal, X_test, y_test):
     warnings.filterwarnings('ignore')
-    model = SVC(C=individual['C'], kernel=individual['kernel'], gamma=individual['gamma'], random_state=42)
-    model.fit(X_train_bal, y_train_bal)
-    y_pred = model.predict(X_test)
-    return recall_score(y_test, y_pred, zero_division=0)
+    try:
+        model = SVC(C=individual['C'], kernel=individual['kernel'], gamma=individual['gamma'], random_state=42, max_iter=10000)
+        model.fit(X_train_bal, y_train_bal)
+        y_pred = model.predict(X_test)
+        recall = recall_score(y_test, y_pred, zero_division=0)
+        f1 = f1_score(y_test, y_pred, zero_division=0)
+        accuracy = accuracy_score(y_test, y_pred)
+        precision = precision_score(y_test, y_pred, zero_division=0)
+        return recall, f1, accuracy, precision
+    except Exception as e:
+        # Return worst case if model fails
+        print(f"  Aviso: Modelo falhou com {individual}: {str(e)[:50]}")
+        return 0.0, 0.0, 0.0, 0.0
 def select_parents(population, fitnesses, num_parents):
     parents = []
+    # Handle case where we can't sample 3 contenders
+    sample_size = min(3, len(population))
     for _ in range(num_parents):
-        contenders = random.sample(list(zip(population, fitnesses)), 3)
+        contenders = random.sample(list(zip(population, fitnesses)), sample_size)
         parents.append(max(contenders, key=lambda x: x[1])[0])
     return parents
 def crossover(parent1, parent2):
@@ -151,23 +131,61 @@ def mutate(individual, mutation_rate):
 def run_genetic_algorithm(X_train_bal, y_train_bal, X_test, y_test, pop_size=10, generations=5, mutation_rate=0.1, num_parents=5):
     population = initialize_population(pop_size)
     best_ind, best_fit = None, -1
+    best_metrics = None
     for gen in range(generations):
-        fitnesses = [fitness_function(ind, X_train_bal, y_train_bal, X_test, y_test) for ind in population]
+        print(f"Geração {gen+1}/{generations} - Avaliando população de {len(population)} indivíduos...")
+        import sys
+        sys.stdout.flush()
+        
+        for i, ind in enumerate(population):
+            print(f"  Avaliando indivíduo {i+1}/{len(population)}...", end='\r')
+            sys.stdout.flush()
+            metrics = fitness_function(ind, X_train_bal, y_train_bal, X_test, y_test)
+            # Handle the case where metrics might be incomplete
+            if len(metrics) == 4:
+                fitnesses_data = [metrics if ind == ind else m for m in [metrics]]
+            else:
+                fitnesses_data.append(metrics)
+        
+        # Recalculate fitnesses_data properly
+        fitnesses_data = []
+        for ind in population:
+            metrics = fitness_function(ind, X_train_bal, y_train_bal, X_test, y_test)
+            fitnesses_data.append(metrics)
+        
+        fitnesses = [f[0] for f in fitnesses_data]  # Extract recall for comparison
         idx = np.argmax(fitnesses)
         if fitnesses[idx] > best_fit:
             best_fit = fitnesses[idx]
             best_ind = population[idx]
-        parents = select_parents(population, fitnesses, num_parents)
+            best_metrics = fitnesses_data[idx]  # Store all metrics (recall, f1, accuracy, precision)
+        
+        # Ensure we have enough parents for crossover
+        num_parents_actual = max(2, min(num_parents, len(population)))
+        parents = select_parents(population, fitnesses, num_parents_actual)
+        
         next_pop = [best_ind]
         while len(next_pop) < pop_size:
-            p1, p2 = random.sample(parents, 2)
+            # Ensure we always have at least 2 parents to sample from
+            if len(parents) >= 2:
+                p1, p2 = random.sample(parents, 2)
+            else:
+                p1 = parents[0] if parents else best_ind
+                p2 = parents[0] if parents else best_ind
+            
             o1, o2 = crossover(p1, p2)
             next_pop.append(mutate(o1, mutation_rate))
             if len(next_pop) < pop_size:
                 next_pop.append(mutate(o2, mutation_rate))
         population = next_pop
-        print(f"Geração {gen+1}/{generations} - Melhor Recall: {best_fit:.4f} com {best_ind}")
-    return best_ind, best_fit
+        print(f"Geração {gen+1}/{generations} - Melhor Recall: {best_fit:.4f}              ")
+        sys.stdout.flush()
+    
+    # Ensure best_metrics is not None before unpacking
+    if best_metrics is None:
+        best_metrics = (best_fit, 0, 0, 0)
+    
+    return best_ind, best_fit, best_metrics[0], best_metrics[1], best_metrics[2], best_metrics[3]
 
 # =====================
 # 5. Execução Principal
@@ -251,17 +269,11 @@ def main():
     logging.info("Dados carregados e pré-processados.")
 
     # Treinamento dos modelos
-    grid_rf, grid_rf_smote = train_random_forest(X_train_pre, y_train, X_train_bal, y_train_bal, X_test_pre, y_test)
-    grid_lr, grid_lr_smote = train_logistic_regression(X_train_pre, y_train, X_train_bal, y_train_bal, X_test_pre, y_test)
     grid_svm, grid_svm_smote = train_svm(X_train_pre, y_train, X_train_bal, y_train_bal, X_test_pre, y_test)
 
     # Avaliação
     results = []
     models = [
-        ("Random Forest", grid_rf.best_estimator_),
-        ("Random Forest (SMOTE)", grid_rf_smote.best_estimator_),
-        ("Logistic Regression", grid_lr.best_estimator_),
-        ("Logistic Regression (SMOTE)", grid_lr_smote.best_estimator_),
         ("SVM", grid_svm.best_estimator_),
         ("SVM (SMOTE)", grid_svm_smote.best_estimator_)
     ]
@@ -291,7 +303,7 @@ def main():
     ga_results = []
     for exp in ga_experiments:
         logging.info(f"\n--- {exp['label']} ---")
-        best_ind, best_fit = run_genetic_algorithm(
+        best_ind, best_fit, recall, f1, accuracy, precision = run_genetic_algorithm(
             X_train_bal, y_train_bal, X_test_pre, y_test,
             pop_size=exp['pop_size'],
             generations=exp['generations'],
@@ -299,13 +311,16 @@ def main():
             num_parents=exp['num_parents']
         )
         logging.info(f"{exp['label']} - Melhores hiperparâmetros: {best_ind}")
-        logging.info(f"{exp['label']} - Melhor recall: {best_fit:.4f}")
+        logging.info(f"{exp['label']} - Melhor recall: {recall:.4f}")
+        logging.info(f"{exp['label']} - Melhor acurácia: {accuracy:.4f}")
+        logging.info(f"{exp['label']} - Melhor precisão: {precision:.4f}")
+        logging.info(f"{exp['label']} - Melhor f1: {f1:.4f}")
         ga_results.append({
             'Modelo': exp['label'],
-            'Acurácia': None,
-            'Precisão': None,
-            'Recall': best_fit,
-            'F1': None,
+            'Acurácia': accuracy,
+            'Precisão': precision,
+            'Recall': recall,
+            'F1': f1,
             'Relatório': None
         })
 
