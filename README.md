@@ -1,6 +1,3 @@
-🩺 Diabetes Tech Challenge - Fase 2
-Este projeto utiliza Machine Learning, Algoritmos Genéticos e IA Generativa (LLM) para diagnosticar diabetes e gerar laudos médicos automáticos.
-
 # 🩺 Diabetes Tech Challenge - Fase 2
 
 Este projeto utiliza **Machine Learning**, **Algoritmos Genéticos** e **IA Generativa (LLM)** para diagnosticar diabetes e gerar laudos médicos automáticos.
@@ -16,7 +13,7 @@ Este projeto utiliza **Machine Learning**, **Algoritmos Genéticos** e **IA Gene
 ### 2. Instalação
 ```bash
 # Clone o repositório
-git clone [https://github.com/seu-usuario/tech-challenge-diabetes.git](https://github.com/seu-usuario/tech-challenge-diabetes.git)
+git clone [https://github.com/fcaetano630/tech-challenge]
 
 # Entre na pasta
 cd tech-challenge-diabetes
