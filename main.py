@@ -1,8 +1,5 @@
 # main.py
-"""
-Script principal para classificação de diabetes com Random Forest, SVM, Regressão Logística e otimização via Algoritmo Genético.
-Organizado em funções reutilizáveis e pronto para execução local.
-"""
+
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split, StratifiedKFold, GridSearchCV
