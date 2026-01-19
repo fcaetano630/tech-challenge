@@ -1,3 +1,6 @@
+import os
+from pathlib import Path
+from dotenv import load_dotenv
 import pandas as pd
 import numpy as np
 import random
@@ -19,12 +22,22 @@ from imblearn.over_sampling import SMOTE
 # 1. CONFIGURAÇÃO LLM (HUGGING FACE)
 # =====================
 # REQUISITO 3: Integração real e Prompt Engineering
+# Localiza o caminho do script atual
+path_do_script = Path(__file__).parent.absolute()
+caminho_env = path_do_script / ".env"
+
+# Carrega o arquivo .env
+load_dotenv(dotenv_path=caminho_env)
+
 HF_TOKEN = os.getenv("HF_TOKEN")
 
-if not HF_TOKEN:
-    raise ValueError("Erro: Variável HF_TOKEN não encontrada. Verifique o arquivo .env")
-client = InferenceClient(model="meta-llama/Meta-Llama-3-8B-Instruct", token=HF_TOKEN)
-
+if HF_TOKEN:
+    print(f"✅ Sucesso! Token carregado: {HF_TOKEN[:8]}...")
+    # Instancie o cliente AQUI para ele estar disponível globalmente
+    client = InferenceClient(model="meta-llama/Meta-Llama-3-8B-Instruct", token=HF_TOKEN)
+else:
+    print(f"❌ Erro: O arquivo .env não foi encontrado em: {caminho_env}")
+    raise ValueError("Variável HF_TOKEN não encontrada.")
 def get_llm_insight(outcome, raw_features):
     """Gera explicação usando Llama-3 (mais estável no roteamento atual)."""
     status = "Diabético" if outcome == 1 else "Não Diabético"
