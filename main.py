@@ -237,66 +237,6 @@ def run_genetic_algorithm(X_train_bal, y_train_bal, X_test, y_test, pop_size=10,
 # 5. Execução Principal
 # =====================
 def main():
-
-    # Integração simulada com LLM para explicação do diagnóstico
-    def simulate_llm_response(outcome, features):
-        explanation = f"O modelo previu que este paciente é **{outcome}**.\n\n"
-        explanation += "Analisando as características fornecidas:\n"
-        features_dict = features.iloc[0].to_dict()
-        if outcome == 'Diabético':
-            if 'Glucose' in features_dict and features_dict['Glucose'] > 120:
-                explanation += f"  - A glicose ({features_dict['Glucose']:.1f}) está elevada, sendo um forte indicador.\n"
-            if 'BMI' in features_dict and features_dict['BMI'] > 30:
-                explanation += f"  - O IMC ({features_dict['BMI']:.1f}) indica sobrepeso/obesidade, um fator de risco.\n"
-            if 'Age' in features_dict and features_dict['Age'] > 40:
-                explanation += f"  - A idade ({features_dict['Age']}) pode aumentar a predisposição.\n"
-            if 'DiabetesPedigreeFunction' in features_dict and features_dict['DiabetesPedigreeFunction'] > 0.5:
-                explanation += f"  - O histórico familiar ({features_dict['DiabetesPedigreeFunction']:.2f}) também sugere maior risco.\n"
-            explanation += "  - A combinação desses fatores contribuiu para o diagnóstico de diabetes."
-        else:
-            if 'Glucose' in features_dict and features_dict['Glucose'] < 100:
-                explanation += f"  - Os níveis de glicose ({features_dict['Glucose']:.1f}) estão saudáveis, um bom sinal.\n"
-            if 'BMI' in features_dict and features_dict['BMI'] < 25:
-                explanation += f"  - O IMC ({features_dict['BMI']:.1f}) está na faixa normal, indicando menor risco.\n"
-            explanation += "  - A maioria das características do paciente está dentro de faixas consideradas de baixo risco para diabetes pelo modelo."
-        explanation += "\n\nEsta é uma explicação simulada. Em um cenário real com um LLM completo e acesso aos pesos/importâncias das features do modelo, a personalização e a profundidade da explicação seriam maiores."
-        return explanation
-
-        # ...existing code...
-
-        # Exemplo de explicação em linguagem natural para um paciente de teste
-        idx = random.randint(0, X_test.shape[0] - 1)
-        paciente = X_test.iloc[[idx]]
-        # Usa o melhor modelo geral (maior recall entre todos os modelos e experimentos)
-        all_results = [r for r in results if r['Recall'] is not None]
-        best_model_name = max(all_results, key=lambda x: x['Recall'])['Modelo']
-        if 'GA Exp' in best_model_name:
-            # Para simplificação, usa o modelo SVM (SMOTE) como exemplo
-            model = grid_svm_smote.best_estimator_
-        else:
-            model = None
-            for name, m in models:
-                if name == best_model_name:
-                    model = m
-                    break
-            if model is None:
-                model = grid_svm_smote.best_estimator_
-        # Prepara os dados do paciente para predição
-        preprocessor = ColumnTransformer([
-            ('num', Pipeline([
-                ('imputer', SimpleImputer(strategy='median')),
-                ('scaler', StandardScaler())
-            ]), paciente.columns.tolist())
-        ], remainder='drop')
-        preprocessor.fit(X_train)
-        paciente_pre_proc = preprocessor.transform(paciente)
-        pred = model.predict(paciente_pre_proc)[0]
-        outcome = 'Diabético' if pred == 1 else 'Não Diabético'
-        logging.info("\n===============================")
-        logging.info("🩺 Exemplo de explicação em linguagem natural para um paciente de teste:")
-        logging.info(f"Características do paciente:\n{paciente.to_string(index=False)}")
-        logging.info(f"Diagnóstico do modelo: {outcome}")
-        logging.info(simulate_llm_response(outcome, paciente))
     # Configuração de logging
     logging.basicConfig(
         filename='tech_challenge2.log',
