@@ -19,6 +19,52 @@ import matplotlib.pyplot as plt
 import random
 import warnings
 import logging
+import os
+from pathlib import Path
+from dotenv import load_dotenv
+from huggingface_hub import InferenceClient
+
+# =====================
+# 0. Configuração LLM (Hugging Face)
+# =====================
+def initialize_llm():
+    """Inicializa o cliente LLM com token do .env"""
+    path_do_script = Path(__file__).parent.absolute()
+    caminho_env = path_do_script / ".env"
+    load_dotenv(dotenv_path=caminho_env)
+    HF_TOKEN = os.getenv("HF_TOKEN")
+    
+    if HF_TOKEN:
+        logging.info(f"✅ Token LLM carregado: {HF_TOKEN[:8]}...")
+        return InferenceClient(model="meta-llama/Meta-Llama-3-8B-Instruct", token=HF_TOKEN)
+    else:
+        logging.warning(f"⚠️  Token LLM não encontrado em {caminho_env}")
+        return None
+
+def get_llm_insight(client, outcome, raw_features):
+    """Gera explicação usando Llama-3 para classificação de diabetes"""
+    if client is None:
+        return "Insight LLM indisponível (token não configurado)"
+    
+    status = "Diabético" if outcome == 1 else "Não Diabético"
+    features_dict = raw_features.to_dict() if hasattr(raw_features, 'to_dict') else raw_features
+    
+    messages = [
+        {
+            "role": "user",
+            "content": f"Você é um médico especialista em diabetes. Explique por que um paciente com esses dados: {features_dict} foi classificado como {status}. Dê 3 conselhos de saúde em português."
+        }
+    ]
+    
+    try:
+        response = client.chat_completion(
+            messages=messages,
+            max_tokens=500,
+            temperature=0.5
+        )
+        return response.choices[0].message.content
+    except Exception as e:
+        return f"Erro na conexão LLM: {str(e)[:100]}"
 
 # =====================
 # 1. Carregamento e Preprocessamento
@@ -84,9 +130,9 @@ def evaluate_model(model, X_test, y_test):
 # 4. Algoritmo Genético para SVM
 # =====================
 HYPERPARAMS = {
-    'C': [0.01, 0.1, 1, 10, 100],
+    'C': [0.001, 0.01, 0.05, 0.1, 0.5, 1, 5, 10, 50, 100, 500, 1000],
     'kernel': ['linear', 'rbf', 'poly', 'sigmoid'],
-    'gamma': ['scale', 'auto', 0.001, 0.01, 0.1, 1, 10]
+    'gamma': ['scale', 'auto', 0.0001, 0.0005, 0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1, 5, 10, 100]
 }
 def create_individual():
     return {k: random.choice(v) for k, v in HYPERPARAMS.items()}
@@ -296,9 +342,9 @@ def main():
     # Algoritmo Genético para SVM - Três experimentos
     logging.info("\nOtimização SVM com Algoritmo Genético (3 experimentos):")
     ga_experiments = [
-        {'pop_size': 10, 'generations': 5, 'mutation_rate': 0.1, 'num_parents': 5, 'label': 'GA Exp1 (pop=10, gen=5, mut=0.1)'},
-        {'pop_size': 20, 'generations': 8, 'mutation_rate': 0.05, 'num_parents': 10, 'label': 'GA Exp2 (pop=20, gen=8, mut=0.05)'},
-        {'pop_size': 8, 'generations': 12, 'mutation_rate': 0.2, 'num_parents': 4, 'label': 'GA Exp3 (pop=8, gen=12, mut=0.2)'}
+        {'pop_size': 10, 'generations': 20, 'mutation_rate': 0.1, 'num_parents': 5, 'label': 'GA Exp1 (pop=10, gen=20, mut=0.1)'},
+        {'pop_size': 20, 'generations': 32, 'mutation_rate': 0.05, 'num_parents': 10, 'label': 'GA Exp2 (pop=20, gen=32, mut=0.05)'},
+        {'pop_size': 8, 'generations': 48, 'mutation_rate': 0.2, 'num_parents': 4, 'label': 'GA Exp3 (pop=8, gen=48, mut=0.2)'}
     ]
     ga_results = []
     for exp in ga_experiments:
@@ -368,10 +414,50 @@ def main():
     plt.show()
 
     # Exibe o melhor modelo por métrica
-    best_by_metric = df_bar.set_index('Modelo').idxmax()
+    best_by_metric = df_bar.set_index('Modelo')[metrics].idxmax()
     logging.info("\n🏆 Melhor modelo por métrica:")
     for metric in metrics:
         logging.info(f" - {metric}: {best_by_metric[metric]}")
+
+    # Integração LLM para explicação de resultado (REQUISITO 3)
+    llm_client = initialize_llm()
+    if llm_client:
+        logging.info("\n" + "="*50)
+        logging.info("🤖 INTERPRETAÇÃO IA (LLAMA-3)")
+        logging.info("="*50)
+        
+        # Seleciona um paciente aleatório para explicação
+        idx = random.randint(0, X_test.shape[0] - 1)
+        paciente_raw = X_test.iloc[idx]
+        paciente_pre = X_test_pre[idx].reshape(1, -1)
+        
+        # Usa o melhor modelo por recall
+        best_recall_model_name = best_by_metric['Recall']
+        best_model = None
+        
+        # Busca o modelo correspondente
+        for name, m in models:
+            if name == best_recall_model_name:
+                best_model = m
+                break
+        
+        if best_model is None:
+            best_model = grid_svm_smote.best_estimator_
+        
+        # Faz predição
+        predicao = best_model.predict(paciente_pre)[0]
+        status = "Diabético" if predicao == 1 else "Não Diabético"
+        
+        logging.info(f"\nPaciente #{idx} - Diagnóstico: {status}")
+        logging.info(f"Características do paciente:")
+        logging.info(f"{paciente_raw.to_string()}")
+        logging.info(f"\nExplicação IA (Llama-3):")
+        logging.info("-" * 50)
+        
+        # Obtém insight do LLM
+        insight = get_llm_insight(llm_client, predicao, paciente_raw)
+        logging.info(insight)
+        logging.info("-" * 50)
 
 if __name__ == "__main__":
     main()
