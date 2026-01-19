@@ -21,8 +21,6 @@ cd tech-challenge-diabetes
 # Instale as dependências
 pip install pandas numpy scikit-learn imbalanced-learn matplotlib python-dotenv huggingface_hub
 
-```bash
-
 3. Configuração de Segurança (Variáveis de Ambiente)
 Crie um arquivo chamado .env na raiz do projeto e adicione seu token do Hugging Face:
 HF_TOKEN=seu_token_aqui_da_hugging_face
@@ -34,7 +32,7 @@ python main.py
 
 🧠 Documentação Técnica (Checklist)🧬 Otimização via Algoritmos Genéticos (Requisito 1)
 O projeto implementa uma busca heurística de hiperparâmetros para o modelo SVM, otimizando:
-Genes: $C$ (Regularização), $Kernel$ e $Gamma$.
+Genes: **C** (Regularização), **Kernel** e **Gamma**.
 Seleção: Torneio de 3 indivíduos.
 Crossover: Uniforme.
 Experimentos: Foram realizados 3 experimentos variando o tamanho da população (8 a 20 indivíduos) e gerações (5 a 15), buscando o maior Recall.
