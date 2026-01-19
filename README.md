@@ -21,6 +21,8 @@ cd tech-challenge-diabetes
 # Instale as dependências
 pip install pandas numpy scikit-learn imbalanced-learn matplotlib python-dotenv huggingface_hub
 
+```bash
+
 3. Configuração de Segurança (Variáveis de Ambiente)
 Crie um arquivo chamado .env na raiz do projeto e adicione seu token do Hugging Face:
 HF_TOKEN=seu_token_aqui_da_hugging_face
