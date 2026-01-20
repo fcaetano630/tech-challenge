@@ -1,43 +1,72 @@
-2026-01-14 21:10:42,113 INFO: Dados carregados e pré-processados.
-2026-01-14 21:10:46,277 INFO: 
+2026-01-19 19:43:20,376 INFO: Dados carregados e pré-processados.
+2026-01-19 19:43:22,523 INFO: 
 ===============================
-2026-01-14 21:10:46,277 INFO: \U0001f4ca Comparativo de Modelos
-2026-01-14 21:10:46,277 INFO: ===============================
-2026-01-14 21:10:46,291 INFO: 
-Random Forest:
-2026-01-14 21:10:46,291 INFO: {'accuracy': 0.7489177489177489, 'precision': 0.6385542168674698, 'recall': 0.654320987654321, 'f1': 0.6463414634146342, 'report': '              precision    recall  f1-score   support\n\n           0       0.81      0.80      0.81       150\n           1       0.64      0.65      0.65        81\n\n    accuracy                           0.75       231\n   macro avg       0.72      0.73      0.73       231\nweighted avg       0.75      0.75      0.75       231\n'}
-2026-01-14 21:10:46,304 INFO: 
-Random Forest (SMOTE):
-2026-01-14 21:10:46,304 INFO: {'accuracy': 0.7532467532467533, 'precision': 0.6428571428571429, 'recall': 0.6666666666666666, 'f1': 0.6545454545454545, 'report': '              precision    recall  f1-score   support\n\n           0       0.82      0.80      0.81       150\n           1       0.64      0.67      0.65        81\n\n    accuracy                           0.75       231\n   macro avg       0.73      0.73      0.73       231\nweighted avg       0.76      0.75      0.75       231\n'}
-2026-01-14 21:10:46,309 INFO: 
-Logistic Regression:
-2026-01-14 21:10:46,309 INFO: {'accuracy': 0.7445887445887446, 'precision': 0.6145833333333334, 'recall': 0.7283950617283951, 'f1': 0.6666666666666666, 'report': '              precision    recall  f1-score   support\n\n           0       0.84      0.75      0.79       150\n           1       0.61      0.73      0.67        81\n\n    accuracy                           0.74       231\n   macro avg       0.73      0.74      0.73       231\nweighted avg       0.76      0.74      0.75       231\n'}
-2026-01-14 21:10:46,315 INFO: 
-Logistic Regression (SMOTE):
-2026-01-14 21:10:46,315 INFO: {'accuracy': 0.7489177489177489, 'precision': 0.6210526315789474, 'recall': 0.7283950617283951, 'f1': 0.6704545454545454, 'report': '              precision    recall  f1-score   support\n\n           0       0.84      0.76      0.80       150\n           1       0.62      0.73      0.67        81\n\n    accuracy                           0.75       231\n   macro avg       0.73      0.74      0.73       231\nweighted avg       0.76      0.75      0.75       231\n'}
-2026-01-14 21:10:46,323 INFO: 
+2026-01-19 19:43:22,523 INFO: \U0001f4ca Comparativo de Modelos
+2026-01-19 19:43:22,523 INFO: ===============================
+2026-01-19 19:43:22,531 INFO: 
 SVM:
-2026-01-14 21:10:46,324 INFO: {'accuracy': 0.7142857142857143, 'precision': 0.5688073394495413, 'recall': 0.7654320987654321, 'f1': 0.6526315789473685, 'report': '              precision    recall  f1-score   support\n\n           0       0.84      0.69      0.76       150\n           1       0.57      0.77      0.65        81\n\n    accuracy                           0.71       231\n   macro avg       0.71      0.73      0.70       231\nweighted avg       0.75      0.71      0.72       231\n'}
-2026-01-14 21:10:46,332 INFO: 
+2026-01-19 19:43:22,531 INFO: {'accuracy': 0.7142857142857143, 'precision': 0.5688073394495413, 'recall': 0.7654320987654321, 'f1': 0.6526315789473685, 'report': '              precision    recall  f1-score   support\n\n           0       0.84      0.69      0.76       150\n           1       0.57      0.77      0.65        81\n\n    accuracy                           0.71       231\n   macro avg       0.71      0.73      0.70       231\nweighted avg       0.75      0.71      0.72       231\n'}
+2026-01-19 19:43:22,539 INFO: 
 SVM (SMOTE):
-2026-01-14 21:10:46,332 INFO: {'accuracy': 0.7705627705627706, 'precision': 0.6666666666666666, 'recall': 0.691358024691358, 'f1': 0.6787878787878788, 'report': '              precision    recall  f1-score   support\n\n           0       0.83      0.81      0.82       150\n           1       0.67      0.69      0.68        81\n\n    accuracy                           0.77       231\n   macro avg       0.75      0.75      0.75       231\nweighted avg       0.77      0.77      0.77       231\n'}
-2026-01-14 21:10:46,332 INFO: 
+2026-01-19 19:43:22,539 INFO: {'accuracy': 0.7705627705627706, 'precision': 0.6666666666666666, 'recall': 0.691358024691358, 'f1': 0.6787878787878788, 'report': '              precision    recall  f1-score   support\n\n           0       0.83      0.81      0.82       150\n           1       0.67      0.69      0.68        81\n\n    accuracy                           0.77       231\n   macro avg       0.75      0.75      0.75       231\nweighted avg       0.77      0.77      0.77       231\n'}
+2026-01-19 19:43:22,539 INFO: 
 Otimização SVM com Algoritmo Genético (3 experimentos):
-2026-01-14 21:10:46,332 INFO: 
---- GA Exp1 (pop=10, gen=5, mut=0.1) ---
-2026-01-14 21:10:47,008 INFO: GA Exp1 (pop=10, gen=5, mut=0.1) - Melhores hiperparâmetros: {'C': 10, 'kernel': 'linear', 'gamma': 'auto'}
-2026-01-14 21:10:47,008 INFO: GA Exp1 (pop=10, gen=5, mut=0.1) - Melhor recall: 0.6914
-2026-01-14 21:10:47,008 INFO: 
---- GA Exp2 (pop=20, gen=8, mut=0.05) ---
-2026-01-14 21:10:59,646 INFO: GA Exp2 (pop=20, gen=8, mut=0.05) - Melhores hiperparâmetros: {'C': 0.1, 'kernel': 'rbf', 'gamma': 1}
-2026-01-14 21:10:59,646 INFO: GA Exp2 (pop=20, gen=8, mut=0.05) - Melhor recall: 0.9136
-2026-01-14 21:10:59,646 INFO: 
---- GA Exp3 (pop=8, gen=12, mut=0.2) ---
-2026-01-14 21:11:00,526 INFO: GA Exp3 (pop=8, gen=12, mut=0.2) - Melhores hiperparâmetros: {'C': 0.1, 'kernel': 'rbf', 'gamma': 1}
-2026-01-14 21:11:00,526 INFO: GA Exp3 (pop=8, gen=12, mut=0.2) - Melhor recall: 0.9136
-2026-01-14 21:11:07,589 INFO: 
+2026-01-19 19:43:22,539 INFO: 
+--- GA Exp1 (pop=10, gen=20, mut=0.1) ---
+2026-01-19 19:43:30,316 INFO: GA Exp1 (pop=10, gen=20, mut=0.1) - Melhores hiperparâmetros: {'C': 0.01, 'kernel': 'poly', 'gamma': 5}
+2026-01-19 19:43:30,316 INFO: GA Exp1 (pop=10, gen=20, mut=0.1) - Melhor recall: 0.8148
+2026-01-19 19:43:30,316 INFO: GA Exp1 (pop=10, gen=20, mut=0.1) - Melhor acurácia: 0.5844
+2026-01-19 19:43:30,317 INFO: GA Exp1 (pop=10, gen=20, mut=0.1) - Melhor precisão: 0.4490
+2026-01-19 19:43:30,317 INFO: GA Exp1 (pop=10, gen=20, mut=0.1) - Melhor f1: 0.5789
+2026-01-19 19:43:30,317 INFO: 
+--- GA Exp2 (pop=20, gen=32, mut=0.05) ---
+2026-01-19 19:43:56,247 INFO: GA Exp2 (pop=20, gen=32, mut=0.05) - Melhores hiperparâmetros: {'C': 0.001, 'kernel': 'poly', 'gamma': 10}
+2026-01-19 19:43:56,247 INFO: GA Exp2 (pop=20, gen=32, mut=0.05) - Melhor recall: 0.8148
+2026-01-19 19:43:56,247 INFO: GA Exp2 (pop=20, gen=32, mut=0.05) - Melhor acurácia: 0.5541
+2026-01-19 19:43:56,247 INFO: GA Exp2 (pop=20, gen=32, mut=0.05) - Melhor precisão: 0.4286
+2026-01-19 19:43:56,247 INFO: GA Exp2 (pop=20, gen=32, mut=0.05) - Melhor f1: 0.5617
+2026-01-19 19:43:56,247 INFO: 
+--- GA Exp3 (pop=8, gen=48, mut=0.2) ---
+2026-01-19 19:44:06,315 INFO: GA Exp3 (pop=8, gen=48, mut=0.2) - Melhores hiperparâmetros: {'C': 0.001, 'kernel': 'rbf', 'gamma': 1}
+2026-01-19 19:44:06,315 INFO: GA Exp3 (pop=8, gen=48, mut=0.2) - Melhor recall: 0.9136
+2026-01-19 19:44:06,316 INFO: GA Exp3 (pop=8, gen=48, mut=0.2) - Melhor acurácia: 0.5368
+2026-01-19 19:44:06,316 INFO: GA Exp3 (pop=8, gen=48, mut=0.2) - Melhor precisão: 0.4253
+2026-01-19 19:44:06,316 INFO: GA Exp3 (pop=8, gen=48, mut=0.2) - Melhor f1: 0.5804
+2026-01-19 19:44:12,965 INFO: 
 \U0001f3c6 Melhor modelo por métrica:
-2026-01-14 21:11:07,589 INFO:  - Acurácia: SVM (SMOTE)
-2026-01-14 21:11:07,589 INFO:  - Precisão: SVM (SMOTE)
-2026-01-14 21:11:07,589 INFO:  - Recall: SVM
-2026-01-14 21:11:07,590 INFO:  - F1: SVM (SMOTE)
+2026-01-19 19:44:12,966 INFO:  - Acurácia: SVM (SMOTE)
+2026-01-19 19:44:12,966 INFO:  - Precisão: SVM (SMOTE)
+2026-01-19 19:44:12,966 INFO:  - Recall: GA Exp3 (pop=8, gen=48, mut=0.2)
+2026-01-19 19:44:12,966 INFO:  - F1: SVM (SMOTE)
+2026-01-19 19:44:12,966 INFO: \u2705 Token LLM carregado: hf_GgDPS...
+2026-01-19 19:44:12,966 INFO: 
+==================================================
+2026-01-19 19:44:12,967 INFO: \U0001f916 INTERPRETAÇÃO IA (LLAMA-3)
+2026-01-19 19:44:12,967 INFO: ==================================================
+2026-01-19 19:44:12,967 INFO: 
+Paciente #196 - Diagnóstico: Não Diabético
+2026-01-19 19:44:12,967 INFO: Características do paciente:
+2026-01-19 19:44:12,968 INFO: Pregnancies                   1.000
+Glucose                     193.000
+BloodPressure                50.000
+SkinThickness                16.000
+Insulin                     375.000
+BMI                          25.900
+DiabetesPedigreeFunction      0.655
+Age                          24.000
+2026-01-19 19:44:12,968 INFO: 
+Explicação IA (Llama-3):
+2026-01-19 19:44:12,968 INFO: --------------------------------------------------
+2026-01-19 19:44:19,889 INFO: HTTP Request: POST https://router.huggingface.co/v1/chat/completions "HTTP/1.1 200 OK"
+2026-01-19 19:44:19,889 INFO: Com base nos dados fornecidos, o paciente foi classificado como Não Diabético. Isso pode parecer um pouco surpreendente, considerando que o nível de glicose no sangue (Glucose) é de 193.0, o que é considerado alto e pode indicar um risco aumentado de diabetes.
+
+No entanto, é importante considerar que o diagnóstico de diabetes depende de vários fatores, incluindo a presença de sintomas, a duração da exposição ao nível de glicose elevado e a presença de outros fatores de risco. Além disso, o modelo de classificação utilizado pode ter considerado outros fatores, como a idade do paciente (24 anos), a pressão arterial (50.0) e a função da pedra de diabetes (0.655), que podem ter influenciado a classificação como Não Diabético.
+
+Aqui estão 3 conselhos de saúde para o paciente:
+
+1. **Controle da glicose**: Embora o paciente tenha sido classificado como Não Diabético, é importante que ele mantenha um controle adequado da glicose no sangue. Isso pode ser feito através de uma dieta equilibrada, exercícios regulares e, se necessário, medicamentos ou insulina.
+2. **Monitoramento da pressão arterial**: A pressão arterial do paciente é um pouco alta (50.0). É importante que ele monitore regularmente sua pressão arterial e tome medidas para reduzir o risco de hipertensão, como uma dieta saudável, exercícios regulares e, se necessário, medicamentos.
+3. **Prevenção da diabetes**: Embora o paciente tenha sido classificado como Não Diabético, ele ainda está em risco de desenvolver diabetes em algum momento da vida. É importante que ele faça mudanças no estilo de vida para prevenir a diabetes, como manter um peso saudável, fazer exercícios regulares e evitar o consumo excessivo de açúcar e gordura.
+
+Lembre-se de que esses conselhos são genéricos e devem ser personalizados com base nas necessidades e condições específicas do paciente. É importante que o paciente consulte um médico especialista em diabetes para ob
+2026-01-19 19:44:19,889 INFO: --------------------------------------------------
