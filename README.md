@@ -48,7 +48,7 @@ Todo o histórico de treinamento e as respostas da LLM são registrados em tempo
 
 
 
-Relatório Técnico: Tech Challenge - Fase 2
+Relatório Técnico: Tech Challenge - Fase 2 - Resumo
 
 Projeto: Sistema Inteligente de Diagnóstico e Interpretação de Diabetes
 1. Arquitetura do Sistema e Decisões de ImplementaçãoO sistema foi desenvolvido utilizando uma arquitetura modular em Python, priorizando a escalabilidade e a segurança.
